@@ -28,8 +28,8 @@ variable "public_subnet_cidr" {
   default     = "10.0.1.0/24"
 }
 
-variable "allowed_ssh_cidr" {
-  description = "CIDR allowed to reach SSH. Set to your own IP (x.x.x.x/32)."
+variable "admin_cidr" {
+  description = "Optional override for the admin CIDR. Empty = auto-detect current public IP."
   type        = string
-  default     = "0.0.0.0/0"
+  default     = ""
 }

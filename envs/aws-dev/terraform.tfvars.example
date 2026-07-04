@@ -1,0 +1,5 @@
+# Optional: only needed to OVERRIDE the auto-detected admin IP,
+# e.g. a fixed office IP or a VPN egress address.
+# By default the current public IP is detected automatically.
+
+# admin_cidr = "x.x.x.x/32"

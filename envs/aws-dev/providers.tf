@@ -4,7 +4,11 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0" # stay on 5.x; avoid breaking changes from 6.0
+      version = "~> 6.0" # testing native `aws login` credential support
+    }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.0"
     }
   }
 }
