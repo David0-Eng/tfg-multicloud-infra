@@ -17,3 +17,15 @@ module "networking" {
   public_subnet_cidr = var.public_subnet_cidr
   admin_cidr         = local.admin_cidr
 }
+
+module "compute" {
+  source = "../../modules/compute"
+
+  project_name      = var.project_name
+  environment       = var.environment
+  instance_type     = var.instance_type
+  key_name          = var.key_name
+  subnet_id         = module.networking.public_subnet_id
+  security_group_id = module.networking.app_security_group_id
+  stack_repo_url    = var.stack_repo_url
+}

@@ -33,3 +33,21 @@ variable "admin_cidr" {
   type        = string
   default     = ""
 }
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+}
+
+variable "key_name" {
+  description = "Existing EC2 key pair for SSH"
+  type        = string
+  default     = "tfg-dev-key"
+}
+
+variable "stack_repo_url" {
+  description = "Git URL of the Docker Compose stack. Empty = install Docker only."
+  type        = string
+  default     = ""
+}
