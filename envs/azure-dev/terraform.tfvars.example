@@ -1,0 +1,14 @@
+# Copy to terraform.tfvars (gitignored) and fill in.
+
+# Get it with: az account show --query id -o tsv
+subscription_id = "00000000-0000-0000-0000-000000000000"
+
+# Get it with: ssh-keygen -y -f ~/.ssh/tfg-dev-key.pem   (run in WSL)
+admin_public_key = "ssh-rsa AAAA... "
+
+# Optional: fixed admin IP override. Empty/omitted = auto-detect.
+# admin_cidr = "x.x.x.x/32"
+
+# The stack repository defaults to the public project repo, so the VM
+# deploys unattended. Override only to point at a fork or a branch.
+# stack_repo_url = "https://github.com/<user>/tfg-multicloud.git"
