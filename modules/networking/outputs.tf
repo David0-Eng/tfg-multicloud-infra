@@ -3,9 +3,9 @@ output "vpc_id" {
   value       = aws_vpc.main.id
 }
 
-output "public_subnet_id" {
-  description = "ID of the public subnet"
-  value       = aws_subnet.public.id
+output "public_subnet_ids" {
+  description = "IDs of the public subnets, index-matched to public_subnet_cidrs"
+  value       = aws_subnet.public[*].id
 }
 
 output "app_security_group_id" {

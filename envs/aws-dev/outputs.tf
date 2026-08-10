@@ -5,7 +5,7 @@ output "vpc_id" {
 
 output "public_subnet_id" {
   description = "ID of the public subnet"
-  value       = module.networking.public_subnet_id
+  value       = module.networking.public_subnet_ids[0]
 }
 
 output "app_security_group_id" {

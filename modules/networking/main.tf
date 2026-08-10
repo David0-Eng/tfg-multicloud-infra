@@ -10,19 +10,20 @@ resource "aws_vpc" "main" {
   }
 }
 
-# Query the AZs available in the current region instead of hardcoding one.
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
+# count.index pairs each CIDR with a different AZ.
 resource "aws_subnet" "public" {
+  count                   = length(var.public_subnet_cidrs)
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnet_cidr
-  availability_zone       = data.aws_availability_zones.available.names[0]
+  cidr_block              = var.public_subnet_cidrs[count.index]
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "${var.project_name}-${var.environment}-public-subnet"
+    Name        = "${var.project_name}-${var.environment}-public-subnet-${count.index + 1}"
     Project     = var.project_name
     Environment = var.environment
   }
@@ -41,7 +42,6 @@ resource "aws_internet_gateway" "main" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
-  # Route all outbound traffic to the internet through the IGW.
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
@@ -55,7 +55,8 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+  count          = length(var.public_subnet_cidrs)
+  subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
@@ -64,7 +65,6 @@ resource "aws_security_group" "app" {
   description = "Firewall for the application instance"
   vpc_id      = aws_vpc.main.id
 
-  # Admin-only: SSH and monitoring backends stay off the public internet.
   ingress {
     description = "SSH from admin IP"
     from_port   = 22
@@ -89,13 +89,16 @@ resource "aws_security_group" "app" {
     cidr_blocks = [var.admin_cidr]
   }
 
-  # Public endpoints for the demo.
-  ingress {
-    description = "FastAPI app"
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  # Public app port only when no load balancer fronts the instances.
+  dynamic "ingress" {
+    for_each = var.expose_app_public ? [1] : []
+    content {
+      description = "FastAPI app"
+      from_port   = 8000
+      to_port     = 8000
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   ingress {
