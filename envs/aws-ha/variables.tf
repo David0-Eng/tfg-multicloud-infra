@@ -1,7 +1,8 @@
 variable "aws_region" {
   description = "AWS region where all resources are created"
   type        = string
-  default     = "eu-south-2" # Spain, matching Azure spaincentral
+  # eu-south-2 (Spain) with Azure in France: cross-border separation for DR
+  default = "eu-south-2"
 }
 
 variable "project_name" {

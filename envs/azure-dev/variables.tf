@@ -45,7 +45,8 @@ variable "admin_cidr" {
 variable "vm_size" {
   description = "VM size"
   type        = string
-  default     = "Standard_B1s"
+  # B-series is unavailable in francecentral for this subscription
+  default = "Standard_D2als_v7"
 }
 
 variable "admin_username" {
