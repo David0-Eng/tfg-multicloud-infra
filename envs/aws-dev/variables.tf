@@ -1,7 +1,9 @@
 variable "aws_region" {
   description = "AWS region where all resources are created"
   type        = string
-  default     = "eu-west-1"
+  # Spain: keeps the primary in a different country from the Azure
+  # secondary, for cross-border DR separation
+  default = "eu-south-2"
 }
 
 variable "project_name" {
@@ -49,5 +51,6 @@ variable "key_name" {
 variable "stack_repo_url" {
   description = "Git URL of the Docker Compose stack. Empty = install Docker only."
   type        = string
-  default     = ""
+  default     = "https://github.com/David0-Eng/tfg-multicloud.git"
 }
+
