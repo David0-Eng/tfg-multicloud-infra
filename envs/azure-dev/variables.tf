@@ -7,9 +7,9 @@ variable "subscription_id" {
 variable "location" {
   description = "Azure region for all resources"
   type        = string
-  # northeurope blocked by policy, spaincentral has no VM quota
-  # on the Students subscription
-  default = "francecentral"
+  # northeurope blocked by policy; spaincentral and francecentral have no
+  # usable VM quota on the Students subscription
+  default = "switzerlandnorth"
 }
 
 variable "project_name" {
@@ -45,8 +45,8 @@ variable "admin_cidr" {
 variable "vm_size" {
   description = "VM size"
   type        = string
-  # B-series is unavailable in francecentral for this subscription
-  default = "Standard_D2als_v7"
+  # 2 vCPU / 1 GiB, matching the AWS t3.micro for a fair comparison
+  default = "Standard_B2ts_v2"
 }
 
 variable "admin_username" {
