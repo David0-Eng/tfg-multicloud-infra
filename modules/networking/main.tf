@@ -109,12 +109,50 @@ resource "aws_security_group" "app" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
-    description = "Allow all outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  # Open egress by default; restricted mode allows only what the
+  # instance legitimately needs.
+  dynamic "egress" {
+    for_each = var.restrict_egress ? [] : [1]
+    content {
+      description = "Allow all outbound"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  dynamic "egress" {
+    for_each = var.restrict_egress ? [80, 443] : []
+    content {
+      description = "Outbound HTTP/HTTPS (apt, Docker Hub, Git)"
+      from_port   = egress.value
+      to_port     = egress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  dynamic "egress" {
+    for_each = var.restrict_egress ? [1] : []
+    content {
+      description = "Outbound DNS"
+      from_port   = 53
+      to_port     = 53
+      protocol    = "udp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  dynamic "egress" {
+    for_each = var.restrict_egress ? [1] : []
+    content {
+      description = "Outbound NTP (time sync, required for TLS)"
+      from_port   = 123
+      to_port     = 123
+      protocol    = "udp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
 
   tags = {

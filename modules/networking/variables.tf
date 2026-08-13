@@ -24,6 +24,11 @@ variable "expose_app_public" {
   default     = true
 }
 
+variable "restrict_egress" {
+  description = "Restrict outbound traffic to HTTP/HTTPS, DNS and NTP instead of allowing everything."
+  type        = bool
+  default     = false
+}
 
 variable "admin_cidr" {
   description = "CIDR allowed to reach SSH and internal monitoring UIs (your IP, x.x.x.x/32)"
