@@ -39,3 +39,9 @@ variable "stack_repo_url" {
   type        = string
   default     = ""
 }
+
+variable "discord_webhook_param" {
+  description = "Name of the SSM parameter holding the Discord webhook URL. Empty = skip secret injection."
+  type        = string
+  default     = ""
+}

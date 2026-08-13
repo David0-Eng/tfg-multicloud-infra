@@ -14,16 +14,18 @@ module "networking" {
   vpc_cidr            = var.vpc_cidr
   public_subnet_cidrs = [var.public_subnet_cidr]
   admin_cidr          = local.admin_cidr
+  restrict_egress     = var.restrict_egress
 }
 
 module "compute" {
   source = "../../modules/compute"
 
-  project_name      = var.project_name
-  environment       = var.environment
-  instance_type     = var.instance_type
-  key_name          = var.key_name
-  subnet_id         = module.networking.public_subnet_ids[0]
-  security_group_id = module.networking.app_security_group_id
-  stack_repo_url    = var.stack_repo_url
+  project_name          = var.project_name
+  environment           = var.environment
+  instance_type         = var.instance_type
+  key_name              = var.key_name
+  subnet_id             = module.networking.public_subnet_ids[0]
+  security_group_id     = module.networking.app_security_group_id
+  stack_repo_url        = var.stack_repo_url
+  discord_webhook_param = var.discord_webhook_param
 }

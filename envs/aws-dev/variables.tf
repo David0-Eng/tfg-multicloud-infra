@@ -54,3 +54,15 @@ variable "stack_repo_url" {
   default     = "https://github.com/David0-Eng/tfg-multicloud.git"
 }
 
+variable "discord_webhook_param" {
+  description = "SSM parameter name holding the Discord webhook. Empty = manual .env."
+  type        = string
+  default     = ""
+}
+
+variable "restrict_egress" {
+  description = "Restrict instance egress to HTTP/HTTPS, DNS and NTP."
+  type        = bool
+  default     = false
+}
+
