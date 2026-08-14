@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 6.0" # testing native `aws login` credential support
+      version = "~> 6.0" # 5.x cannot read the `aws login` credential cache
     }
     http = {
       source  = "hashicorp/http"
