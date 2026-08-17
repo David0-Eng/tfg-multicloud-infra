@@ -4,6 +4,9 @@
 *.tfstate.*
 crash.log
 
+# Measurement output, regenerated on every run
+*.log
+
 # Variable files with real values (may contain sensitive data)
 *.tfvars
 !*.tfvars.example
