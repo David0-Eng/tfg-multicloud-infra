@@ -29,6 +29,11 @@ jobs:
 
   secret-scan:
     runs-on: ubuntu-latest
+    # On a pull request the scanner asks the API which commits to look at,
+    # and the default token cannot read them.
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       # Full history: a secret that was committed and later removed is still
       # in the repository, which is exactly how the webhook leaked.
