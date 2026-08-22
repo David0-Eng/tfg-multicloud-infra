@@ -27,6 +27,19 @@ jobs:
       - name: Validate
         run: terraform -chdir=envs/${{ matrix.env }} validate
 
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      # Full history: a secret that was committed and later removed is still
+      # in the repository, which is exactly how the webhook leaked.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   security-scan:
     runs-on: ubuntu-latest
     steps:
